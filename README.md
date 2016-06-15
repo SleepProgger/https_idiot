@@ -1,21 +1,21 @@
 # https_idiot
-Super simple https server in python (python 2 and 3 compatible) for developing / testing
+Super simple https server in python (python 2 and 3 compatible) for developing / testing  
 
-**THIS SCRIPT SHOULD NOT BE USED AS PRODUCTION SERVER**
-If you supply no certificate via the `--key` parameter it will use a SHARED hardcoded certificate.
-Additionally it only allows one concurrent connection.
+**THIS SCRIPT SHOULD NOT BE USED AS PRODUCTION SERVER**  
+If you supply no certificate via the `--key` parameter it will use a SHARED hardcoded certificate.  
+Additionally it only allows one concurrent connection.  
 
-*Basically the only reason to use this is if you want to load/inject local CSS or Javascript files in a website loaded via https without them getting blocked by your browser because of `Mixed Active Content`*
+*Basically the only reason to use this is if you want to load/inject local CSS or Javascript files in a website loaded via https without them getting blocked by your browser because of `Mixed Active Content`*  
 
 
 
 Usage
 -----
-For the simplest case just drop the `https_idiot.py` into the folder you want to use as webroot and double click it (depending on your OS and settings and if you have python installed *doh*) it should start the webserver on port `4443`.
-Just navigate to 'https://localhost:4443' and add an exception for the certificate.
-Use `ctr+c` to stop the server.
+For the simplest case just drop the `https_idiot.py` into the folder you want to use as webroot and double click it (depending on your OS and settings and if you have python installed *doh*) it should start the webserver on port `4443`.   
+Just navigate to 'https://localhost:4443' and add an exception for the certificate.  
+Use `ctr+c` to stop the server.  
 
-The web root is always the current directory.
+The web root is always the current directory.  
 
     usage: https_idiot.py [-h] [-k KEY] [-p PORT] [-l LISTEN]
     
