@@ -1,5 +1,5 @@
 # https_idiot
-Super simple https server in python for developing / testing
+Super simple https server in python (python 2 and 3 compatible). for developing / testing
 
 **THIS SCRIPT SHOULD NOT BE USED AS PRODUCTION SERVER**  
 If you supply no certificate via the `--key` parameter it will use a SHARED hardcoded certificate.  
@@ -11,7 +11,7 @@ Additionally it only allows one concurrent connection.
 
 Usage
 -----
-For the simplest case just drop the `https_idiot.py` into the folder you want to use as webroot and double click it (depending on your OS and settings) it should start the webserver on port `4443`.  
+For the simplest case just drop the `https_idiot.py` into the folder you want to use as webroot and double click it (depending on your OS and settings and if you have python installed *doh*) it should start the webserver on port `4443`.  
 Just navigate to 'https://localhost:4443' and add an exception for the certificate.  
 Use `ctr+c` to stop the server.
 
