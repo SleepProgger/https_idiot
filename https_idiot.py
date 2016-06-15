@@ -16,6 +16,8 @@
 
 import argparse
 import os
+from os.path import isfile, realpath, dirname, join as os_join
+
 try:
     from http.server import HTTPServer, SimpleHTTPRequestHandler
     # we just assume python 3 here
@@ -79,19 +81,24 @@ a+MHSy4jcC2im710HusdvBaFDK7qUzByF91j
 
 
 if __name__ == '__main__':
-    _is_temp_file = False
     
     parser = argparse.ArgumentParser()
     parser.add_argument('-k', '--key', help="""The keyfile to use.
     Need to contain the key AND the certificate formated as PEM.
-    If not given we try the following till something exists.
+    If not given we try the following until something exists.
     1. "server.pem" in the CWD.
     2. "server.pem" at the same location as this script.
     3. The fallback key included in this script (This is not safe at all)""", default="")
     parser.add_argument('-p', '--port', type=int, help="The port to use (Default 4443).", default=4443)
+    parser.add_argument('-l', '--listen', help="""The address to listen to.
+    Defaults to '127.0.0.1' which only allows connections from the same system.
+    Set to '0.0.0.0' or '' to allow connections from everywhere or a specific ip/domain to restrict it.
+    """, default="")
     args = parser.parse_args()
+
     
     # Search for the keyfile
+    _is_temp_file = False
     if len(args.key) != 0:
         if not os.path.isfile(args.key):
             print("Keyfile '%s' not found." % args.key)
@@ -100,11 +107,12 @@ if __name__ == '__main__':
     else:
         if os.path.isfile('server.pem'):
             keyfile = 'server.pem'
-        elif os.path.isfile(os.path.dirname(os.path.realpath(__file__)) + '/server.pem'):
-            keyfile = os.path.dirname(os.path.realpath(__file__)) + '/server.pem'
+            os.path.join(a)
+        elif isfile(os_join(dirname(realpath(__file__)), 'server.pem')):
+            keyfile = os_join(dirname(realpath(__file__)), 'server.pem')
         else:
             # We need to create a temporary file for the key
-            # as ssl.wrap_socket just pass the path to
+            # as ssl.wrap_socket just pass the path.
             from tempfile import mkstemp
             fd, keyfile = mkstemp()
             offset = 0
@@ -115,9 +123,9 @@ if __name__ == '__main__':
             _is_temp_file = True
         
     print('Using keyfile "%s"' % keyfile)
-    print('START LISTENING ON %s:%i\n' % ('localhost', args.port))
+    print('START LISTENING ON https://%s:%i\n' % ('localhost', args.port))
     
-    httpd = HTTPServer(('localhost', args.port), SimpleHTTPRequestHandler)
+    httpd = HTTPServer((args.listen, args.port), SimpleHTTPRequestHandler)
     httpd.socket = ssl.wrap_socket (httpd.socket, certfile=keyfile, server_side=True)
     try:
         httpd.serve_forever()
@@ -125,5 +133,3 @@ if __name__ == '__main__':
         print("Going down.")
         if _is_temp_file:
             os.remove(keyfile)
-    
-    
